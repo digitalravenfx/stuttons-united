@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en" data-palette="dusk" data-type="garamond-classic" data-hero="fullbleed" data-motion="rich">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Engagement Photos — Mark &amp; Jeremy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Spectral:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ============ gallery layout ============ */
+    .gallery-wrap {
+      padding: clamp(40px, 6vw, 72px) var(--gutter) clamp(80px, 10vw, 120px);
+    }
+
+    /* Masonry main grid via CSS columns — preserves native aspect ratios */
+    .gallery-grid {
+      column-count: 3;
+      column-gap: 18px;
+    }
+    @media (max-width: 980px) { .gallery-grid { column-count: 2; } }
+    @media (max-width: 560px) { .gallery-grid { column-count: 1; } }
+
+    .gallery-figure {
+      break-inside: avoid;
+      margin: 0 0 18px;
+      position: relative;
+      background: var(--bg-soft);
+      cursor: zoom-in;
+      overflow: hidden;
+      transition: transform 320ms ease, box-shadow 320ms ease;
+      display: block;
+    }
+    .gallery-figure:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--paper-shadow);
+    }
+    .gallery-figure img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .gallery-figure .num {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      font-family: var(--label);
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: rgba(0,0,0,0.55);
+      padding: 4px 10px;
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 200ms ease;
+    }
+    .gallery-figure:hover .num { opacity: 1; }
+
+    /* Featured row — three photos with editorial weight */
+    .gallery-feature {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+    .gallery-feature .gallery-figure {
+      margin-bottom: 0;
+      height: 100%;
+    }
+    .gallery-feature .gallery-figure img {
+      height: 100%;
+      object-fit: cover;
+    }
+    .gallery-feature .gallery-figure:nth-child(1) { aspect-ratio: 4 / 5; }
+    .gallery-feature .gallery-figure:nth-child(2) { aspect-ratio: 4 / 5; }
+    .gallery-feature .gallery-figure:nth-child(3) { aspect-ratio: 4 / 5; }
+    @media (max-width: 760px) {
+      .gallery-feature { grid-template-columns: 1fr; }
+      .gallery-feature .gallery-figure { aspect-ratio: 3 / 2 !important; }
+    }
+
+    /* Pull-quote breaker */
+    .gallery-quote {
+      text-align: center;
+      padding: clamp(48px, 8vw, 96px) clamp(16px, 4vw, 80px);
+      font-family: var(--serif-display);
+      font-style: italic;
+      font-size: clamp(24px, 2.8vw, 38px);
+      color: var(--slate);
+      line-height: 1.35;
+      max-width: 920px;
+      margin: clamp(24px, 4vw, 48px) auto;
+    }
+    .gallery-quote .qmark {
+      display: block;
+      font-size: 80px;
+      line-height: 0.4;
+      color: var(--sand);
+      margin-bottom: 24px;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 9, 8, 0.96);
+      z-index: 9000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(20px, 4vw, 60px);
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+    }
+    .lightbox .lb-close {
+      position: absolute;
+      top: 24px;
+      right: 28px;
+      background: transparent;
+      border: 1px solid rgba(232,226,212,0.4);
+      color: #e8e2d4;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 200ms;
+    }
+    .lightbox .lb-close:hover { background: rgba(232,226,212,0.15); border-color: #e8e2d4; }
+    .lightbox .lb-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: 1px solid rgba(232,226,212,0.3);
+      color: #e8e2d4;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 200ms;
+    }
+    .lightbox .lb-prev { left: 24px; }
+    .lightbox .lb-next { right: 24px; }
+    .lightbox .lb-nav:hover { background: rgba(232,226,212,0.12); border-color: #e8e2d4; }
+    .lightbox .lb-caption {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--label);
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(232,226,212,0.7);
+    }
+    @media (max-width: 760px) {
+      .lightbox .lb-nav { width: 40px; height: 40px; font-size: 18px; }
+      .lightbox .lb-prev { left: 12px; }
+      .lightbox .lb-next { right: 12px; }
+    }
+
+    /* Photographer credit */
+    .gallery-credit {
+      max-width: 880px;
+      margin: clamp(60px, 8vw, 96px) auto 0;
+      text-align: center;
+      padding-top: 32px;
+      border-top: 1px solid var(--rule);
+    }
+    .gallery-credit .label {
+      font-family: var(--label);
+      font-size: 10px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--mist);
+      margin-bottom: 12px;
+    }
+    .gallery-credit .name {
+      font-family: var(--serif-display);
+      font-style: italic;
+      font-size: 28px;
+      color: var(--ink);
+    }
+    .gallery-credit .meta {
+      font-family: var(--label);
+      font-size: 11px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--slate);
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body data-screen-label="Gallery">
+
+  <nav class="site-nav">
+    <div class="nav-left">Mark &amp; Jeremy · 02.13.27</div>
+    <a href="index.html" class="monogram" aria-label="Home">M <span style="color: rgb(166, 124, 64)">&amp;</span> J</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <div class="nav-item has-sub">
+        <a href="schedule.html">Schedule <span class="caret" aria-hidden="true">▾</span></a>
+        <div class="nav-sub">
+          <a href="activities.html">Friday Activities</a>
+        </div>
+      </div>
+      <a href="travel.html">Travel</a>
+      <a href="gallery.html" class="active">Photos</a>
+      <a href="registry.html">Registry</a>
+      <a href="faq.html">FAQ</a>
+      <a href="rsvp.html">RSVP</a>
+    </div>
+  </nav>
+
+  <header class="page-hero">
+    <div class="eyebrow">MAY 2026</div>
+    <h1>Photographs</h1>
+    <div class="lede">A few favorites from a long evening in the city, rooftops, stairwells, and a penthouse.</div>
+  </header>
+
+  <section>
+    <div class="wrap gallery-wrap">
+
+      <!-- FEATURED ROW -->
+      <div class="gallery-feature reveal">
+        <figure class="gallery-figure" data-i="0">
+          <span class="num">01</span>
+          <img src="images/engagement/1175.jpg" alt="Mark and Jeremy on a rooftop bench" loading="lazy" />
+        </figure>
+        <figure class="gallery-figure" data-i="1">
+          <span class="num">02</span>
+          <img src="images/engagement/1097.jpg" alt="Penthouse plaque" loading="lazy" />
+        </figure>
+        <figure class="gallery-figure" data-i="2">
+          <span class="num">03</span>
+          <img src="images/engagement/1057.jpg" alt="A stolen kiss in the stairwell" loading="lazy" />
+        </figure>
+      </div>
+
+      <!-- PULL QUOTE -->
+      <blockquote class="gallery-quote reveal">Just a simple afternoon in the city at the iconic Sorento.</blockquote>
+
+      <!-- MASONRY -->
+      <div class="gallery-grid reveal">
+        <figure class="gallery-figure" data-i="3"><span class="num">04</span><img src="images/engagement/1093.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="4"><span class="num">05</span><img src="images/engagement/1199.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="5"><span class="num">06</span><img src="images/engagement/1283.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="6"><span class="num">07</span><img src="images/engagement/1143.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="7"><span class="num">08</span><img src="images/engagement/1235.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="8"><span class="num">09</span><img src="images/engagement/1141.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="9"><span class="num">10</span><img src="images/engagement/1095.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="10"><span class="num">11</span><img src="images/engagement/1255.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="11"><span class="num">12</span><img src="images/engagement/1031.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="12"><span class="num">13</span><img src="images/engagement/1153.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="13"><span class="num">14</span><img src="images/engagement/1201.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="14"><span class="num">15</span><img src="images/engagement/1067.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="15"><span class="num">16</span><img src="images/engagement/1185.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="16"><span class="num">17</span><img src="images/engagement/1281.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="17"><span class="num">18</span><img src="images/engagement/1273.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="18"><span class="num">19</span><img src="images/engagement/1037.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="19"><span class="num">20</span><img src="images/engagement/1161.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="20"><span class="num">21</span><img src="images/engagement/1103.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="21"><span class="num">22</span><img src="images/engagement/1257.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="23"><span class="num">23</span><img src="images/engagement/1239.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="24"><span class="num">24</span><img src="images/engagement/1061.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="25"><span class="num">25</span><img src="images/engagement/1271.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="26"><span class="num">26</span><img src="images/engagement/1231.jpg" alt="" loading="lazy" /></figure>
+        <figure class="gallery-figure" data-i="27"><span class="num">27</span><img src="images/engagement/1203.jpg" alt="" loading="lazy" /></figure>
+      </div>
+
+      <!-- Photographer credit -->
+      <div class="gallery-credit reveal">
+        <div class="label">Photographs by</div>
+        <a class="name" href="https://jonas-seaman.com/" target="_blank" rel="noopener" style="text-decoration: none;">Jonas Seaman</a>
+        <div class="meta">
+          Seattle, Washington &middot; May 2026
+          &middot; <a href="https://jonas-seaman.com/" target="_blank" rel="noopener" style="color: inherit;">jonas-seaman.com</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button class="lb-close" aria-label="Close" data-lb="close">×</button>
+    <button class="lb-nav lb-prev" aria-label="Previous" data-lb="prev">‹</button>
+    <button class="lb-nav lb-next" aria-label="Next" data-lb="next">›</button>
+    <img id="lb-image" alt="" />
+    <div class="lb-caption" id="lb-caption"></div>
+  </div>
+
+  <section class="cta-banner">
+    <div class="wrap-narrow">
+      <div class="sub">Now the only thing left</div>
+      <h2>Is to <em>be there.</em></h2>
+      <a class="btn" href="rsvp.html">RSVP <span class="arrow">→</span></a>
+    </div>
+  </section>
+
+  <footer class="site-foot">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-mono">M&nbsp;<span style="color: rgb(166, 124, 64)">&amp;</span>&nbsp;J</div>
+        <p style="margin-top:14px; font-style: italic; color: var(--mist);">February 13, 2027<br/>Leavenworth, Washington</p>
+      </div>
+      <div class="foot-col">
+        <h5>The weekend</h5>
+        <ul>
+          <li><a href="schedule.html">Schedule</a></li>
+          <li><a href="travel.html">Travel &amp; lodging</a></li>
+          <li><a href="gallery.html">Photos</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Practical</h5>
+        <ul>
+          <li><a href="rsvp.html">RSVP</a></li>
+          <li><a href="registry.html">Registry</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© Mark &amp; Jeremy</span>
+      <span>stuttonsunited.com</span>
+    </div>
+  </footer>
+
+  <script src="site.js"></script>
+  <script>
+    // Lightbox — opens when any gallery image is clicked
+    (function () {
+      const lb = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lb-image');
+      const lbCap = document.getElementById('lb-caption');
+      const figures = Array.from(document.querySelectorAll('.gallery-figure'));
+      let current = -1;
+
+      function open(i) {
+        const fig = figures[i];
+        if (!fig) return;
+        const img = fig.querySelector('img');
+        if (!img || !img.src) return;
+        current = i;
+        lbImg.src = img.src;
+        lbImg.alt = img.alt || '';
+        const num = fig.querySelector('.num')?.textContent || '';
+        lbCap.textContent = num + (img.alt ? ' · ' + img.alt : '');
+        lb.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function close() {
+        lb.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+      function nav(dir) {
+        const next = (current + dir + figures.length) % figures.length;
+        open(next);
+      }
+
+      figures.forEach((fig, i) => {
+        fig.addEventListener('click', () => open(i));
+      });
+      document.querySelector('[data-lb="close"]').addEventListener('click', close);
+      document.querySelector('[data-lb="prev"]').addEventListener('click', () => nav(-1));
+      document.querySelector('[data-lb="next"]').addEventListener('click', () => nav(1));
+      lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
+      document.addEventListener('keydown', (e) => {
+        if (!lb.classList.contains('open')) return;
+        if (e.key === 'Escape') close();
+        if (e.key === 'ArrowLeft') nav(-1);
+        if (e.key === 'ArrowRight') nav(1);
+      });
+    })();
+  </script>
+
+</body>
+</html>

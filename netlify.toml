@@ -1,0 +1,30 @@
+# Stuttons United — Netlify config
+# Static site + one serverless function that posts RSVPs to Notion.
+[build]
+  publish = "."
+  command = ""
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# The RSVP → Notion function. Netlify auto-bundles anything in this folder.
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Long-cache the photos & css/js (they're content-hashed by filename here,
+# so bump filenames if you ever swap an image).
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"

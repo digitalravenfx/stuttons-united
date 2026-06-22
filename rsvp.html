@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en" data-palette="dusk" data-type="garamond-classic" data-hero="fullbleed" data-motion="rich">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RSVP — Mark &amp; Jeremy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Spectral:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-screen-label="RSVP">
+
+  <nav class="site-nav">
+    <div class="nav-left">Mark &amp; Jeremy · 02.13.27</div>
+    <a href="index.html" class="monogram" aria-label="Home">M <span style="color: rgb(166, 124, 64)">&amp;</span> J</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <div class="nav-item has-sub">
+        <a href="schedule.html">Schedule <span class="caret" aria-hidden="true">▾</span></a>
+        <div class="nav-sub">
+          <a href="activities.html">Friday Activities</a>
+        </div>
+      </div>
+      <a href="travel.html">Travel</a>
+      <a href="gallery.html">Photos</a>
+      <a href="registry.html">Registry</a>
+      <a href="faq.html">FAQ</a>
+      <a href="rsvp.html" class="active">RSVP</a>
+    </div>
+  </nav>
+
+  <header class="page-hero" style="padding-top: clamp(40px, 7vh, 80px); padding-bottom: clamp(28px, 4vh, 48px);">
+    <div class="eyebrow">KINDLY RESPOND BY AUGUST 1</div>
+    <h1>RSVP</h1>
+  </header>
+
+  <section style="padding-top: clamp(20px, 3vw, 40px);">
+    <div class="wrap-narrow">
+      <div class="rsvp-shell">
+
+        <!-- progress -->
+        <div class="rsvp-progress" id="progress">
+          <div class="step active" data-step="1"><span class="pip">i</span></div>
+          <div class="connector"></div>
+          <div class="step" data-step="2"><span class="pip">ii</span></div>
+          <div class="connector"></div>
+          <div class="step" data-step="3"><span class="pip">iii</span></div>
+          <div class="connector"></div>
+          <div class="step" data-step="4"><span class="pip">iv</span></div>
+        </div>
+
+        <form name="rsvp" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="rsvp-form">
+          <!-- Netlify form metadata -->
+          <input type="hidden" name="form-name" value="rsvp" />
+          <p hidden><label>Don't fill this out: <input name="bot-field" /></label></p>
+          <!-- Hidden mirrors for custom toggle widgets -->
+          <input type="hidden" name="attending" id="hidden-attending" value="" />
+          <input type="hidden" name="events" id="hidden-events" value="" />
+          <input type="hidden" name="plusone" id="hidden-plusone" value="no" />
+
+        <div class="rsvp-card">
+
+          <!-- STEP 1 -->
+          <div class="rsvp-step active" data-step="1">
+            <h2 class="italic">Let's find you</h2>
+            <p class="step-lede">Type your name as it appears on your invitation. If you're responding for two, you'll add your guest on the next step.</p>
+
+            <div class="field">
+              <label for="name">Full name</label>
+              <input type="text" id="name" name="name" placeholder="e.g. Eleanor Whittaker" autocomplete="name" />
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="we'll send a confirmation here" autocomplete="email" />
+            </div>
+
+            <div class="rsvp-actions">
+              <button type="button" class="btn-back" disabled>← Back</button>
+              <button type="button" class="btn" data-action="next">Continue <span class="arrow">→</span></button>
+            </div>
+          </div>
+
+          <!-- STEP 2 — attendance + which events -->
+          <div class="rsvp-step" data-step="2">
+            <h2 class="italic">Will you be there?</h2>
+            <p class="step-lede">We'd be honored either way. Tell us yes or no, and which events you can make if you plan to join us.</p>
+
+            <div class="choice-row">
+              <button type="button" class="choice" data-attending="yes">
+                <span class="ck">Joyfully, yes</span>
+                <span class="csub">Count me in</span>
+              </button>
+              <button type="button" class="choice" data-attending="no">
+                <span class="ck">Sadly, no</span>
+                <span class="csub">Toast us from afar</span>
+              </button>
+            </div>
+
+            <div id="events-block" style="display:none;">
+              <div class="field" style="margin-bottom: 12px;">
+                <label>Which events will you attend?</label>
+              </div>
+              <div class="event-checks">
+                <div class="event-check" data-event="thu">
+                  <div class="box"></div>
+                  <div class="name">Welcome cocktails</div>
+                  <div class="when">THU · 5 PM</div>
+                </div>
+                <div class="event-check" data-event="fri-day">
+                  <div class="box"></div>
+                  <div class="name">Friday activities</div>
+                  <div class="when">FRI MORNING</div>
+                </div>
+                <div class="event-check" data-event="fri-dinner">
+                  <div class="box"></div>
+                  <div class="name">Group dinner in town</div>
+                  <div class="when">FRI · 6 PM</div>
+                </div>
+                <div class="event-check checked" data-event="sat">
+                  <div class="box"></div>
+                  <div class="name">Ceremony &amp; reception</div>
+                  <div class="when">Sat · 4 PM</div>
+                </div>
+                <div class="event-check" data-event="sun">
+                  <div class="box"></div>
+                  <div class="name">Farewell brunch</div>
+                  <div class="when">Sun · 10 AM</div>
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Bringing a guest?</label>
+                <div class="choice-row" style="margin-bottom: 0;">
+                  <button type="button" class="choice" data-plusone="yes"><span class="ck">Yes, +1</span><span class="csub">I'll add their name</span></button>
+                  <button type="button" class="choice selected" data-plusone="no"><span class="ck">Just me</span><span class="csub">Flying solo</span></button>
+                </div>
+              </div>
+
+              <div class="field" id="guest-name-field" style="display:none;">
+                <label for="guest-name">Guest's full name</label>
+                <input type="text" id="guest-name" name="guestName" placeholder="So we can make a name card" />
+              </div>
+
+              <div class="field" id="guest-email-field" style="display:none;">
+                <label for="guest-email">Guest's email address</label>
+                <input type="email" id="guest-email" name="guestEmail" placeholder="So we can keep them in the loop" />
+              </div>
+
+              <div class="field">
+                <label for="num-attending">Number attending the ceremony</label>
+                <p class="field-note">Ages 15 and above. Black-tie attire is required. Childcare for younger family members will be provided on Saturday from 4:00 PM to 10:00 PM.</p>
+                <input type="number" id="num-attending" name="numberAttending" min="0" max="10" placeholder="0" inputmode="numeric" />
+              </div>
+
+              <div class="field">
+                <label for="num-childcare">Number requiring childcare on Saturday</label>
+                <p class="field-note">Supervised childcare will be available during Saturday's ceremony and reception (4:00 PM – 10:00 PM). Please enter <em>0</em> if no one in your party requires this service.</p>
+                <input type="number" id="num-childcare" name="numberChildcare" min="0" max="10" placeholder="0" inputmode="numeric" />
+              </div>
+            </div>
+
+            <div class="rsvp-actions">
+              <button type="button" class="btn-back" data-action="back">← Back</button>
+              <button type="button" class="btn" data-action="next">Continue <span class="arrow">→</span></button>
+            </div>
+          </div>
+
+          <!-- STEP 3 — meal + extras -->
+          <div class="rsvp-step" data-step="3">
+            <h2 class="italic">A few details</h2>
+            <p class="step-lede">Tell us how to make this weekend eventful.</p>
+
+            <div class="field" id="friday-block" style="display:none;">
+              <label>Which Friday activities sound good?</label>
+              <p class="friday-lede">Choose up to three — these will likely run at the same time, so pick favorites. We'll use this to plan capacity; final sign-ups come with the welcome packet.</p>
+
+              <div class="friday-select" id="friday-select">
+                <label class="friday-opt"><input type="checkbox" name="fridayActivities" value="Ski or snowboard" data-friday="ski-snowboard" /><span class="box"></span><span class="name">Ski or snowboard</span></label>
+                <label class="friday-opt"><input type="checkbox" name="fridayActivities" value="Cross-country skiing" data-friday="xc-ski" /><span class="box"></span><span class="name">Cross-country skiing</span></label>
+                <label class="friday-opt"><input type="checkbox" name="fridayActivities" value="Sledding" data-friday="sledding" /><span class="box"></span><span class="name">Sledding</span></label>
+                <label class="friday-opt"><input type="checkbox" name="fridayActivities" value="Snow tubing" data-friday="snow-tubing" /><span class="box"></span><span class="name">Snow tubing</span></label>
+                <label class="friday-opt"><input type="checkbox" name="fridayActivities" value="Snowshoeing" data-friday="snowshoeing" /><span class="box"></span><span class="name">Snowshoeing</span></label>
+                <label class="friday-opt"><input type="checkbox" name="fridayActivities" value="Snowmobiling" data-friday="snowmobiling" /><span class="box"></span><span class="name">Snowmobiling</span></label>
+                <label class="friday-opt"><input type="checkbox" name="fridayActivities" value="Reindeer Farm" data-friday="reindeer" /><span class="box"></span><span class="name">Reindeer Farm</span></label>
+                <label class="friday-opt"><input type="checkbox" name="fridayActivities" value="Adventure Park / Alpine Slide" data-friday="alpine-slide" /><span class="box"></span><span class="name">Adventure Park / Alpine Slide</span></label>
+                <label class="friday-opt"><input type="checkbox" name="fridayActivities" value="Nature park visit" data-friday="nature-park" /><span class="box"></span><span class="name">Nature park visit</span></label>
+                <label class="friday-opt"><input type="checkbox" name="fridayActivities" value="Wine tasting tour" data-friday="wine-tasting" /><span class="box"></span><span class="name">Wine tasting tour</span></label>
+                <label class="friday-opt"><input type="checkbox" name="fridayActivities" value="Spa / Massage" data-friday="spa-massage" /><span class="box"></span><span class="name">Spa / Massage</span></label>
+              </div>
+              <div class="friday-counter"><span id="friday-count">0</span> of 3 selected</div>
+            </div>
+
+            <div class="field">
+              <label for="diet">Dietary restrictions or allergies</label>
+              <textarea id="diet" name="diet" placeholder="Anything we should know — vegan, GF, religious, allergies, food-fear, etc."></textarea>
+            </div>
+
+            <div class="field">
+              <label for="song">A song that'll get you on the dance floor</label>
+              <input type="text" id="song" name="song" placeholder="The DJ takes requests — make it good" />
+            </div>
+
+            <div class="field">
+              <label for="advice">Your best piece of marriage advice</label>
+              <textarea id="advice" name="advice" placeholder="Hard-won wisdom, a one-liner, or 'don't go to bed angry.' We're collecting them in a little book."></textarea>
+            </div>
+
+            <div class="field">
+              <label for="memory">A favorite memory of Mark or Jeremy</label>
+              <textarea id="memory" name="memory" placeholder="A story, a moment, a time you knew. We'll cry. In a good way."></textarea>
+            </div>
+
+            <div class="rsvp-actions">
+              <button type="button" class="btn-back" data-action="back">← Back</button>
+              <button type="button" class="btn" data-action="next">Review &amp; send <span class="arrow">→</span></button>
+            </div>
+          </div>
+
+          <!-- STEP 4 — confirmation -->
+          <div class="rsvp-step" data-step="4">
+            <div class="confirmation">
+              <div class="seal">M<span class="amp">&amp;</span>J</div>
+              <h2 class="italic" id="conf-headline">Received.</h2>
+              <p style="font-family: var(--serif-display); font-style: italic; font-size: 22px; color: var(--slate); max-width: 480px; margin: 16px auto 32px; line-height: 1.45;" id="conf-body">Thank you, <span id="conf-name">friend</span>. We've recorded your response and will be in touch with more information based on your selections.</p>
+
+              <div style="display: inline-flex; flex-direction: column; gap: 6px; text-align: left; border: 1px solid var(--rule); padding: 24px 32px; margin-bottom: 32px;" id="conf-summary">
+                <!-- filled by JS -->
+              </div>
+
+              <div id="conf-actions" style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                <a class="btn btn-ghost" href="schedule.html">View the schedule</a>
+                <a class="btn" href="travel.html#reserve">Book your room <span class="arrow">→</span></a>
+              </div>
+
+              <p style="margin-top: 32px; font-family: var(--label); font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--mist);">
+                Need to change your response? <a href="#" onclick="event.preventDefault(); window.__rsvpReset();" style="color: var(--ink); text-decoration: underline; text-underline-offset: 4px;">Edit RSVP</a>
+              </p>
+            </div>
+          </div>
+
+        </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-foot">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-mono">M&nbsp;<span style="color: rgb(166, 124, 64)">&amp;</span>&nbsp;J</div>
+        <p style="margin-top:14px; font-style: italic; color: var(--mist);">February 13, 2027<br/>Leavenworth, Washington</p>
+      </div>
+      <div class="foot-col">
+        <h5>The weekend</h5>
+        <ul>
+          <li><a href="schedule.html">Schedule</a></li>
+          <li><a href="travel.html">Travel &amp; lodging</a></li>
+          <li><a href="travel.html#reserve">Make a reservation</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Practical</h5>
+        <ul>
+          <li><a href="rsvp.html">RSVP</a></li>
+          <li><a href="registry.html">Registry</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© Mark &amp; Jeremy</span>
+      <span>stuttonsunited.com</span>
+    </div>
+  </footer>
+
+  <script src="site.js"></script>
+  <script src="rsvp.js"></script>
+</body>
+</html>
